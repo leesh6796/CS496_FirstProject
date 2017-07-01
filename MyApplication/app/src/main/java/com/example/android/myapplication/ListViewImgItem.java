@@ -8,12 +8,17 @@ import android.graphics.drawable.Drawable;
 
 public class ListViewImgItem {
     private Drawable img;
+    private int id;
 
     public void setImg(Drawable item) {
         this.img = item;
+    }
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Drawable getImg() {
         return this.img;
     }
+    public int getId() { return this.id; }
 }
