@@ -41,54 +41,57 @@ public class MainActivity extends AppCompatActivity {
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
+    private BackPressCloseHandler backPressCloseHandler; // 뒤로 두 번 누르면 꺼지기.
 
-        @Override
-        protected void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_main);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
-            if(!PreloadBitmap.isInitialized()) {
-                // 아이린 미리 로드
-                Context ct = getApplicationContext();
-                BitmapFactory.Options opt = new BitmapFactory.Options();
-                opt.inSampleSize = 1;
-                int size = 1;
-                int i;
+        backPressCloseHandler = new BackPressCloseHandler(this);
 
-                Resources res = getResources();
-                int numGirls = res.getInteger(R.integer.numGirls);
+        if(!PreloadBitmap.isInitialized()) {
+            // 아이린 미리 로드
+            Context ct = getApplicationContext();
+            BitmapFactory.Options opt = new BitmapFactory.Options();
+            opt.inSampleSize = 1;
+            int size = 1;
+            int i;
 
-                for (i = 1; i <= numGirls; i++) {
-                    try {
-                        String imgName = "i" + String.valueOf(i);
-                        int id = R.drawable.class.getField(imgName).getInt(null);
-                        Bitmap bitmapOriginal = BitmapFactory.decodeResource(res, id, opt);
-                        Bitmap bitmapSimpleSize = Bitmap.createScaledBitmap(bitmapOriginal, bitmapOriginal.getWidth() / size, bitmapOriginal.getHeight() / size, true);
-                        PreloadBitmap.addBitmap(bitmapSimpleSize);
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                    }
+            Resources res = getResources();
+            int numGirls = res.getInteger(R.integer.numGirls);
+
+            for (i = 1; i <= numGirls; i++) {
+                try {
+                    String imgName = "i" + String.valueOf(i);
+                    int id = R.drawable.class.getField(imgName).getInt(null);
+                    Bitmap bitmapOriginal = BitmapFactory.decodeResource(res, id, opt);
+                    Bitmap bitmapSimpleSize = Bitmap.createScaledBitmap(bitmapOriginal, bitmapOriginal.getWidth() / size, bitmapOriginal.getHeight() / size, true);
+                    PreloadBitmap.addBitmap(bitmapSimpleSize);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
                 }
             }
-
-            Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-            setSupportActionBar(toolbar);
-            // Create the adapter that will return a fragment for each of the three
-            // primary sections of the activity.
-            mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-
-            // Set up the ViewPager with the sections adapter.
-            mViewPager = (ViewPager) findViewById(R.id.container);
-            mViewPager.setAdapter(mSectionsPagerAdapter);
-
-            TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-            tabLayout.setupWithViewPager(mViewPager);
-
         }
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        // Create the adapter that will return a fragment for each of the three
+        // primary sections of the activity.
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
-        @Override
-        public boolean onCreateOptionsMenu(Menu menu) {
+        // Set up the ViewPager with the sections adapter.
+        mViewPager = (ViewPager) findViewById(R.id.container);
+        mViewPager.setAdapter(mSectionsPagerAdapter);
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(mViewPager);
+
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
@@ -107,6 +110,12 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+        backPressCloseHandler.onBackPressed();
     }
 
 
@@ -151,11 +160,11 @@ public class MainActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "CONTACTS";
+                    return "연락처";
                 case 1:
-                    return "GALLERY";
+                    return "갤러리";
                 case 2:
-                    return "MEMO";
+                    return "메모";
             }
             return null;
         }
