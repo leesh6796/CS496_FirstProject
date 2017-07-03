@@ -11,9 +11,15 @@ import java.util.ArrayList;
 public class PreloadBitmap {
 
     private static ArrayList<Bitmap> bitmaps = new ArrayList<>();
+    private static boolean loaded = false;
 
     public static void addBitmap(Bitmap src) {
+        loaded = true;
         bitmaps.add(src);
+    }
+
+    public static boolean isInitialized() {
+        return loaded;
     }
 
     public static Bitmap getBitmap(int pos) {
