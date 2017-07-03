@@ -31,11 +31,12 @@ public class Tab1Contacts extends Fragment {
     ListView mListView;
 
     private static final int REQUEST_READ_CONTACTS = 1;
-    private JSONArray contactList = new JSONArray();
+    private JSONArray contactList;
 
     private void readContacts() {
         ContentResolver resolver = getActivity().getApplicationContext().getContentResolver();
         Cursor cursor = resolver.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
+        contactList = new JSONArray();
 
         while (cursor.moveToNext()) {
             JSONObject personInfo = new JSONObject();
