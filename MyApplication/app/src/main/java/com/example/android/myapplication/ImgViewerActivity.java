@@ -16,6 +16,6 @@ public class ImgViewerActivity extends AppCompatActivity {
         Intent intent = getIntent();
 
         ImageView img = (ImageView)findViewById(R.id.targetImg);
-        img.setImageResource(intent.getIntExtra("imgNumber", 0));
+        img.setImageBitmap(PreloadBitmap.getBitmap(intent.getIntExtra("imgNumber", 0)));
     }
 }

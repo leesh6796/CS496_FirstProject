@@ -1,5 +1,9 @@
 package com.example.android.myapplication;
 
+import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -18,6 +22,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.TextView;
+
+import static android.R.attr.id;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -40,6 +46,28 @@ public class MainActivity extends AppCompatActivity {
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
+
+            // 아이린 미리 로드
+            Context ct = getApplicationContext();
+            BitmapFactory.Options opt = new BitmapFactory.Options();
+            opt.inSampleSize = 1;
+            int size = 1;
+            int i;
+
+            Resources res = getResources();
+            int numGirls = res.getInteger(R.integer.numGirls);
+
+            for(i=1; i<=numGirls; i++) {
+                try {
+                    String imgName = "i" + String.valueOf(i);
+                    int id = R.drawable.class.getField(imgName).getInt(null);
+                    Bitmap bitmapOriginal = BitmapFactory.decodeResource(res, id, opt);
+                    Bitmap bitmapSimpleSize = Bitmap.createScaledBitmap(bitmapOriginal, bitmapOriginal.getWidth() / size, bitmapOriginal.getHeight() / size, true);
+                    PreloadBitmap.addBitmap(bitmapSimpleSize);
+                } catch(Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
 
             Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
             setSupportActionBar(toolbar);
