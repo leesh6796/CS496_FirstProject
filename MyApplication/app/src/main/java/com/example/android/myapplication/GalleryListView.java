@@ -3,6 +3,8 @@ package com.example.android.myapplication;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -18,6 +20,8 @@ import android.widget.ListView;
  */
 
 public class GalleryListView extends Fragment {
+    private ImgListAdapter adapter;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -57,34 +61,27 @@ public class GalleryListView extends Fragment {
                 String imgName = "i" + String.valueOf(i);
                 int id = R.drawable.class.getField(imgName).getInt(null);
                 Log.i("Resource Id", String.valueOf(id));
-                //if(i == 12) break;
-                adapter.addItem(ContextCompat.getDrawable(ct, id), id);
+                int size = 1;
+                BitmapFactory.Options opt = new BitmapFactory.Options();
+                opt.inSampleSize = 4;
+                Bitmap bitmapOriginal = BitmapFactory.decodeResource(ct.getResources(), id, opt);
+                Bitmap bitmapSimpleSize = Bitmap.createScaledBitmap(bitmapOriginal, bitmapOriginal.getWidth() / size, bitmapOriginal.getHeight() / size, true);
+                adapter.addItem(bitmapSimpleSize, id);
             } catch (Exception ex) {
                 //ex.printStackTrace();
             }
         }
-        //adapter.addItem(R.drawable.i1);
-        //adapter.addItem(R.drawable.i2);
-        /*adapter.addItem(ContextCompat.getDrawable(ct, R.drawable.i3), R.drawable.i3);
-        adapter.addItem(ContextCompat.getDrawable(ct, R.drawable.i4), R.drawable.i4);
-        adapter.addItem(ContextCompat.getDrawable(ct, R.drawable.i5), R.drawable.i5);
-        adapter.addItem(ContextCompat.getDrawable(ct, R.drawable.i6), R.drawable.i6);
-        adapter.addItem(ContextCompat.getDrawable(ct, R.drawable.i7), R.drawable.i7);
-        adapter.addItem(ContextCompat.getDrawable(ct, R.drawable.i8), R.drawable.i8);
-        adapter.addItem(ContextCompat.getDrawable(ct, R.drawable.i9), R.drawable.i9);
-        adapter.addItem(ContextCompat.getDrawable(ct, R.drawable.i10), R.drawable.i10);
-        adapter.addItem(ContextCompat.getDrawable(ct, R.drawable.i11), R.drawable.i11);
-        adapter.addItem(ContextCompat.getDrawable(ct, R.drawable.i12), R.drawable.i12);
-        adapter.addItem(ContextCompat.getDrawable(ct, R.drawable.i13), R.drawable.i13);
-        adapter.addItem(ContextCompat.getDrawable(ct, R.drawable.i14), R.drawable.i14);
-        adapter.addItem(ContextCompat.getDrawable(ct, R.drawable.i15), R.drawable.i15);
-        adapter.addItem(ContextCompat.getDrawable(ct, R.drawable.i16), R.drawable.i16);
-        adapter.addItem(ContextCompat.getDrawable(ct, R.drawable.i17), R.drawable.i17);
-        adapter.addItem(ContextCompat.getDrawable(ct, R.drawable.i18), R.drawable.i18);
-        adapter.addItem(ContextCompat.getDrawable(ct, R.drawable.i19), R.drawable.i19);
-        adapter.addItem(ContextCompat.getDrawable(ct, R.drawable.i20), R.drawable.i20);*/
 
 
         return rootView;
     }
+
+    /*@Override
+    public void onDetach() {
+        super.onDetach();
+        int i;
+        for(i=0; i<adapter.getCount(); i++) {
+            ((ListViewImgItem)adapter.getItem(i)).getSrc().recycle();
+        }
+    }*/
 }

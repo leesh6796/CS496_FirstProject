@@ -47,14 +47,18 @@ public class ImgListAdapter extends BaseAdapter {
         ImageView img = (ImageView)convertView.findViewById(R.id.imgitem);
 
         ListViewImgItem item = listViewItemList.get(pos);
-        if(item.getImg() != null) {
+        img.setImageBitmap(item.getSrc());
+        /*if(item.getImg() != null) {
             int size = 1;
-            Bitmap bitmapOriginal = BitmapFactory.decodeResource(context.getResources(), item.getId());
+            BitmapFactory.Options opt = new BitmapFactory.Options();
+            opt.inSampleSize = 8;
+            Bitmap bitmapOriginal = BitmapFactory.decodeResource(context.getResources(), item.getId(), opt);
             Bitmap bitmapSimpleSize = Bitmap.createScaledBitmap(bitmapOriginal, bitmapOriginal.getWidth() / size, bitmapOriginal.getHeight() / size, true);
-            if(!bitmapSimpleSize.isRecycled())
-                bitmapSimpleSize.recycle();
             img.setImageBitmap(bitmapSimpleSize);
-        }
+
+            /*bitmapOriginal.recycle();
+            bitmapSimpleSize.recycle();
+        }*/
 
         //img.setImageResource(item.getId());
         //img.setImageDrawable(item.getImg());
@@ -83,6 +87,14 @@ public class ImgListAdapter extends BaseAdapter {
     public void addItem(Drawable img, int id) {
         ListViewImgItem item = new ListViewImgItem();
         item.setImg(img);
+        item.setId(id);
+
+        listViewItemList.add(item);
+    }
+
+    public void addItem(Bitmap img, int id) {
+        ListViewImgItem item = new ListViewImgItem();
+        item.setSrc(img);
         item.setId(id);
 
         listViewItemList.add(item);

@@ -1,6 +1,7 @@
 package com.example.android.myapplication;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
@@ -41,10 +42,7 @@ public class ImgGridAdapter extends BaseAdapter {
         ImageView img = (ImageView)convertView.findViewById(R.id.gridImg);
         ListViewImgItem item = gridViewItemList.get(pos);
 
-        /*if(img != null)
-            ((BitmapDrawable)img.getDrawable()).getBitmap().recycle();*/
-
-        img.setImageDrawable(item.getImg());
+        img.setImageBitmap(item.getSrc());
 
         return convertView;
     }
@@ -60,6 +58,14 @@ public class ImgGridAdapter extends BaseAdapter {
     public void addItem(Drawable img, int id) {
         ListViewImgItem item = new ListViewImgItem();
         item.setImg(img);
+        item.setId(id);
+
+        gridViewItemList.add(item);
+    }
+
+    public void addItem(Bitmap img, int id) {
+        ListViewImgItem item = new ListViewImgItem();
+        item.setSrc(img);
         item.setId(id);
 
         gridViewItemList.add(item);

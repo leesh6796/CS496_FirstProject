@@ -3,6 +3,8 @@ package com.example.android.myapplication;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -19,6 +21,8 @@ import android.widget.ListView;
  */
 
 public class GalleryGridView extends Fragment {
+    private ImgGridAdapter adapter;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -55,16 +59,29 @@ public class GalleryGridView extends Fragment {
 
 
         for(i=1; i<=numGirls; i++) {
-            try {
-                String imgName = "i" + String.valueOf(i);
-                int id = R.drawable.class.getField(imgName).getInt(null);
-                if(i == 12) break;
-                adapter.addItem(ContextCompat.getDrawable(ct, id), id);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
+        try {
+            String imgName = "i" + String.valueOf(i);
+            int id = R.drawable.class.getField(imgName).getInt(null);
+            int size = 1;
+            BitmapFactory.Options opt = new BitmapFactory.Options();
+            opt.inSampleSize = 4;
+            Bitmap bitmapOriginal = BitmapFactory.decodeResource(ct.getResources(), id, opt);
+            Bitmap bitmapSimpleSize = Bitmap.createScaledBitmap(bitmapOriginal, bitmapOriginal.getWidth() / size, bitmapOriginal.getHeight() / size, true);
+            adapter.addItem(bitmapSimpleSize, id);
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
+    }
 
         return rootView;
     }
+
+    /*@Override
+    public void onDetach() {
+        super.onDetach();
+        int i;
+        for(i=0; i<adapter.getCount(); i++) {
+            ((ListViewImgItem)adapter.getItem(i)).getSrc().recycle();
+        }
+    }*/
 }
