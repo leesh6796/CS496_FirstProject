@@ -37,10 +37,10 @@ public class Tab2Gallery extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.tab2gallery, container, false);
 
-        FragmentManager fm = getFragmentManager();
+        /*(FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         ft.add(R.id.frag_tab2, new GalleryListView()); // Default는 ListView
-        ft.commit();
+        ft.commit();*/
 
         FloatingActionButton fab = (FloatingActionButton)rootView.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -48,7 +48,7 @@ public class Tab2Gallery extends Fragment {
             public void onClick(View view) {
                 /*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();*/
-                Fragment frag;
+                /*Fragment frag;
                 FragmentManager fm = getFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
 
@@ -62,7 +62,7 @@ public class Tab2Gallery extends Fragment {
                 isListView = !isListView;
 
                 ft.replace(R.id.frag_tab2, frag).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-                ft.commit();
+                ft.commit();*/
             }
         });
 
