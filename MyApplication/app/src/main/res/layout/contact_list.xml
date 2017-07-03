@@ -5,12 +5,11 @@
     android:layout_margin="4dp">
 
     <ImageView
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_margin="10dp"
-        android:scaleType="fitXY"
         android:id="@+id/icon"
-        android:layout_weight="0" />
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_margin="10dp"
+        android:scaleType="fitXY" />
 
     <LinearLayout
         android:orientation="vertical"
@@ -29,6 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/phoneNumber"
+            android:layout_marginLeft="5dp"
             android:textSize="18sp"
             android:textColor="#444444" />
 
