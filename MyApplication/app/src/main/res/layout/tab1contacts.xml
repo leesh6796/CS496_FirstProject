@@ -6,7 +6,7 @@
     android:paddingTop="0dp"
     android:paddingRight="0dp"
     android:paddingLeft="10dp"
-    android:paddingBottom="38dp"
+    android:paddingBottom="0dp"
 
     tools:context="com.example.android.myapplication.MainActivity$PlaceholderFragment">
 
@@ -29,12 +29,14 @@
             android:maxLines="1"
             android:id="@+id/editTextFilter"/>
 
-        <ImageView
+        <ImageButton
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
+            android:scaleType="centerCrop"
             android:src="@drawable/sort"
+            android:backgroundTint="@color/trans"
             android:id="@+id/sortButton"/>
 
     </LinearLayout>

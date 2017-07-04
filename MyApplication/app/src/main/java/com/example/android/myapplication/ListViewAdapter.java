@@ -24,6 +24,7 @@ public class ListViewAdapter extends BaseAdapter implements Filterable{
 
     private ArrayList<ListViewItem> listViewItemList = new ArrayList<ListViewItem>() ;
     private ArrayList<ListViewItem> filteredItemList = listViewItemList;
+    private boolean sorted = false;
     Filter listFilter;
 
     // ListViewAdapter의 생성자
@@ -31,6 +32,15 @@ public class ListViewAdapter extends BaseAdapter implements Filterable{
 
     }
 
+    public void sortList() {
+        if (sorted) {
+            Collections.reverse(filteredItemList);
+            sorted = false;
+        } else {
+            Collections.sort(filteredItemList);
+            sorted =true;
+        }
+    }
     // Adapter에 사용되는 데이터의 개수를 리턴. : 필수 구현
     @Override
     public int getCount() {
