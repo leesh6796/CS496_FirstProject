@@ -20,22 +20,26 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
+import java.util.Collections;
 
 
 public class Tab1Contacts extends Fragment {
 
     public Tab1Contacts() {}
-    ListView mListView;
+    private ListView mListView;
+    private ImageButton sortButton;
 
     private static final int REQUEST_READ_CONTACTS = 1;
     private JSONArray contactList;
     ListViewAdapter adapter;
+
     private void readContacts() {
         ContentResolver resolver = getActivity().getApplicationContext().getContentResolver();
         Cursor cursor = resolver.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
@@ -69,6 +73,8 @@ public class Tab1Contacts extends Fragment {
         }
     }
 
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -78,8 +84,15 @@ public class Tab1Contacts extends Fragment {
         mListView = (ListView) rootView.findViewById(R.id.contacts);
         adapter = new ListViewAdapter() ;
         mListView.setAdapter(adapter);
-        adapter.addItem(contactList, getResources().getDrawable(R.drawable.bullbasaur));
-
+        adapter.addItem(contactList, getResources().getDrawable(R.drawable.user));
+        sortButton = (ImageButton)rootView.findViewById(R.id.sortButton);
+        sortButton.setOnClickListener(new ImageButton.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                adapter.sortList();
+                adapter.notifyDataSetChanged();
+            }
+        });
         EditText editTextFilter = (EditText)rootView.findViewById(R.id.editTextFilter);
         editTextFilter.addTextChangedListener(new TextWatcher() {
             @Override
@@ -93,14 +106,9 @@ public class Tab1Contacts extends Fragment {
             @Override
             public void afterTextChanged(Editable s) {
                 String filterText = s.toString();
-                if (filterText.length() > 0) {
-                    mListView.setFilterText(filterText);
-                } else {
-                    mListView.clearTextFilter();
-                }
+                ((ListViewAdapter) mListView.getAdapter()).getFilter().filter(filterText);
             }
         });
-
         return rootView;
     }
 

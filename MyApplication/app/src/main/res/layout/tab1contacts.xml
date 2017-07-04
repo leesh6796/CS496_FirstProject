@@ -1,33 +1,52 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingTop="0dp"
     android:paddingRight="0dp"
-    android:paddingLeft="0dp"
-    android:paddingBottom="38dp"
+    android:paddingLeft="10dp"
+    android:paddingBottom="0dp"
 
     tools:context="com.example.android.myapplication.MainActivity$PlaceholderFragment">
 
-    <ImageView
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_margin="5dp"
-        android:src="@drawable/search"
-        android:id="@+id/searchTextView" />
-
-    <EditText
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/searchTextView"
-        android:maxLines="1"
-        android:id="@+id/editTextFilter"/>
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:padding="10dp"
+            android:src="@drawable/search"
+            android:id="@+id/searchTextView" />
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:id="@+id/editTextFilter"/>
+
+        <ImageButton
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/sort"
+            android:backgroundTint="@color/trans"
+            android:id="@+id/sortButton"/>
+
+    </LinearLayout>
+
 
     <ListView
         android:id="@+id/contacts"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/editTextFilter"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:textFilterEnabled="true" />
 
-</RelativeLayout>
+</LinearLayout>
