@@ -23,8 +23,7 @@ repositories {
     mavenCentral()
 
     jcenter()
-    if (project.hasProperty('local.repo'))
-    {
+    if (project.hasProperty('local.repo')) {
         maven { name 'glide-local'; url project.property('local.repo') }
     }
     maven { name 'glide-snapshot'; url 'http://oss.sonatype.org/content/repositories/snapshots' }
@@ -42,8 +41,8 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support:design:25.3.1'
-    testCompile 'junit:junit:4.12'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.android.support:support-v4:25.3.1'
+    testCompile 'junit:junit:4.12'
 }
