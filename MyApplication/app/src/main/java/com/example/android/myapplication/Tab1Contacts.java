@@ -33,14 +33,23 @@ import java.io.OutputStream;
 
 public class Tab1Contacts extends Fragment {
 
-    public Tab1Contacts() {}
+    public Tab1Contacts() {
+    }
     private ListView mListView;
     private ImageButton sortButton;
     private ContentResolver resolver;
     private static final int REQUEST_READ_CONTACTS = 1;
     private JSONArray contactList;
+    private String title="";
+    private String link="";
+    private boolean sharePage;
     ListViewAdapter adapter;
 
+    public void shareSetting(String t, String l) {
+        this.link = l;
+        this.title = t;
+        this.sharePage = true;
+    }
     private void readContacts() {
         resolver = getActivity().getApplicationContext().getContentResolver();
         Cursor cursor = resolver.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
@@ -84,7 +93,7 @@ public class Tab1Contacts extends Fragment {
 
         View rootView = inflater.inflate(R.layout.tab1contacts, container, false);
         mListView = (ListView) rootView.findViewById(R.id.contacts);
-        adapter = new ListViewAdapter() ;
+        adapter = new ListViewAdapter(sharePage, title, link) ;
         mListView.setAdapter(adapter);
         adapter.addItem(contactList, getResources().getDrawable(R.drawable.user));
         sortButton = (ImageButton)rootView.findViewById(R.id.sortButton);

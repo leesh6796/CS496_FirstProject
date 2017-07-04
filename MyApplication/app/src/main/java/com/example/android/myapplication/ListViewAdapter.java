@@ -39,10 +39,15 @@ public class ListViewAdapter extends BaseAdapter implements Filterable{
     private ArrayList<ListViewItem> filteredItemList = listViewItemList;
     private boolean sorted = false;
     private ImageButton shareButton;
+    private String smsText;
     Filter listFilter;
 
-    // ListViewAdapter의 생성자
-    public ListViewAdapter() {
+    public ListViewAdapter(boolean sharePage, String title, String link) {
+        if (sharePage) {
+            smsText=title+" "+link;
+        } else {
+            smsText="";
+        }
     }
 
     public void sortList() {
@@ -87,9 +92,9 @@ public class ListViewAdapter extends BaseAdapter implements Filterable{
 
         shareButton = (ImageButton) convertView.findViewById(R.id.shareButton);
         shareButton.setOnClickListener(new ImageButton.OnClickListener() {
+
             @Override
             public void onClick(View v) {
-                String smsText = "test test";
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) //At least KitKat
                 {
                     String defaultSmsPackageName = Telephony.Sms.getDefaultSmsPackage(v.getContext()); //Need to change the build to API 19
