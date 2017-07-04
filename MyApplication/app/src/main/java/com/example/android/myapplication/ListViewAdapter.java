@@ -39,12 +39,14 @@ public class ListViewAdapter extends BaseAdapter implements Filterable{
     private ArrayList<ListViewItem> filteredItemList = listViewItemList;
     private boolean sorted = false;
     private ImageButton shareButton;
+    private boolean sharePage = false;
     private String smsText;
     Filter listFilter;
 
-    public ListViewAdapter(boolean sharePage, String title, String link) {
-        if (sharePage) {
+    public ListViewAdapter(boolean isSharePage, String title, String link) {
+        if (isSharePage) {
             smsText=title + "\r\n" + link;
+            sharePage = true;
         } else {
             smsText="";
         }
@@ -75,50 +77,79 @@ public class ListViewAdapter extends BaseAdapter implements Filterable{
         // "listview_item" Layout을 inflate하여 convertView 참조 획득.
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.contact_list, parent, false);
+            if (sharePage) {
+                convertView = inflater.inflate(R.layout.contact_list_share, parent, false);
+            } else {
+                convertView = inflater.inflate(R.layout.contact_list, parent, false);
+            }
         }
 
-        // 화면에 표시될 View(Layout이 inflate된)으로부터 위젯에 대한 참조 획득
-//        ImageView iconImageView = (ImageView) convertView.findViewById(R.id.icon) ;
         TextView nameTextView = (TextView) convertView.findViewById(R.id.name) ;
         TextView phoneNumberTextView = (TextView) convertView.findViewById(R.id.phoneNumber) ;
-        // Data Set(listViewItemList)에서 position에 위치한 데이터 참조 획득
+
         final ListViewItem listViewItem = filteredItemList.get(position);
 
-        // 아이템 내 각 위젯에 데이터 반영
-//        iconImageView.setImageDrawable(listViewItem.getIcon());
         nameTextView.setText(listViewItem.getName());
         phoneNumberTextView.setText(listViewItem.getPhoneNumber());
-
-        shareButton = (ImageButton) convertView.findViewById(R.id.shareButton);
-        shareButton.setOnClickListener(new ImageButton.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) //At least KitKat
-                {
-                    String defaultSmsPackageName = Telephony.Sms.getDefaultSmsPackage(v.getContext()); //Need to change the build to API 19
-
-                    Intent sendIntent = new Intent(Intent.ACTION_SENDTO);
-                    sendIntent = new Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:" + Uri.encode(listViewItem.getPhoneNumber())));
-                    sendIntent.putExtra(Intent.EXTRA_TEXT, smsText);
-
-                    if (defaultSmsPackageName != null)//Can be null in case that there is no default, then the user would be able to choose any app that support this intent.
+        if (sharePage) {
+            View sharePerson = convertView.findViewById(R.id.sharePerson);
+            sharePerson.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) //At least KitKat
                     {
-                        sendIntent.setPackage(defaultSmsPackageName);
-                    }
-                    v.getContext().startActivity(sendIntent);
+                        String defaultSmsPackageName = Telephony.Sms.getDefaultSmsPackage(v.getContext()); //Need to change the build to API 19
 
+                        Intent sendIntent = new Intent(Intent.ACTION_SENDTO);
+                        sendIntent = new Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:" + Uri.encode(listViewItem.getPhoneNumber())));
+                        sendIntent.putExtra(Intent.EXTRA_TEXT, smsText);
+
+                        if (defaultSmsPackageName != null)//Can be null in case that there is no default, then the user would be able to choose any app that support this intent.
+                        {
+                            sendIntent.setPackage(defaultSmsPackageName);
+                        }
+                        v.getContext().startActivity(sendIntent);
+
+                    }
+                    else //For early versions, do what worked for you before.
+                    {
+                        Intent sendIntent = new Intent(Intent.ACTION_VIEW);
+                        sendIntent.setData(Uri.parse("sms:"));
+                        sendIntent.putExtra("sms_body", smsText);
+                        v.getContext().startActivity(sendIntent);
+                    }
                 }
-                else //For early versions, do what worked for you before.
-                {
-                    Intent sendIntent = new Intent(Intent.ACTION_VIEW);
-                    sendIntent.setData(Uri.parse("sms:"));
-                    sendIntent.putExtra("sms_body", smsText);
-                    v.getContext().startActivity(sendIntent);
+            });
+        } else {
+            shareButton = (ImageButton) convertView.findViewById(R.id.shareButton);
+            shareButton.setOnClickListener(new ImageButton.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) //At least KitKat
+                    {
+                        String defaultSmsPackageName = Telephony.Sms.getDefaultSmsPackage(v.getContext()); //Need to change the build to API 19
+
+                        Intent sendIntent = new Intent(Intent.ACTION_SENDTO);
+                        sendIntent = new Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:" + Uri.encode(listViewItem.getPhoneNumber())));
+                        sendIntent.putExtra(Intent.EXTRA_TEXT, smsText);
+
+                        if (defaultSmsPackageName != null)//Can be null in case that there is no default, then the user would be able to choose any app that support this intent.
+                        {
+                            sendIntent.setPackage(defaultSmsPackageName);
+                        }
+                        v.getContext().startActivity(sendIntent);
+
+                    } else //For early versions, do what worked for you before.
+                    {
+                        Intent sendIntent = new Intent(Intent.ACTION_VIEW);
+                        sendIntent.setData(Uri.parse("sms:"));
+                        sendIntent.putExtra("sms_body", smsText);
+                        v.getContext().startActivity(sendIntent);
+                    }
                 }
-            }
-        });
+            });
+        }
 
 
         return convertView;

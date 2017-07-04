@@ -3,7 +3,8 @@
     android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginLeft="10dp"
-    android:layout_marginRight="10dp">
+    android:layout_marginRight="10dp"
+    android:id="@+id/sharePerson">
 
     <ImageView
         android:layout_weight="0"
@@ -37,17 +38,6 @@
             android:textColor="#444444" />
 
     </LinearLayout>
-
-    <ImageButton
-        android:layout_weight="0"
-        android:layout_width="50dp"
-        android:layout_height="35dp"
-        android:padding="10dp"
-        android:layout_margin="10dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/message"
-        android:backgroundTint="@color/trans"
-        android:id="@+id/shareButton"/>
 
 
 </LinearLayout>

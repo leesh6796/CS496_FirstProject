@@ -24,10 +24,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-/**
- * Created by q on 2017-06-30.
- */
-
 public class Tab2Gallery extends Fragment {
 
     private boolean isListView = true;

@@ -20,17 +20,17 @@ public class SelectReceiverActivity extends AppCompatActivity {
         String title = intent.getStringExtra("title");
         String link = intent.getStringExtra("link");
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.contactToolBar);
-        setSupportActionBar(toolbar);
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.contactToolBar);
+//        setSupportActionBar(toolbar);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         Tab1Contacts contactFragment = new Tab1Contacts();
         contactFragment.shareSetting(title, link);
-        ft.add(R.id.contactFrag, contactFragment); // Default는 ListView
+        ft.add(R.id.contactFrag, contactFragment);
         ft.commit();
     }
 
