@@ -1,7 +1,15 @@
 package com.example.android.myapplication;
 
+import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.os.Build;
+import android.provider.MediaStore;
+import android.provider.Telephony;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,27 +17,32 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+
+import static android.Manifest.permission_group.SMS;
 
 public class ListViewAdapter extends BaseAdapter implements Filterable{
 
     private ArrayList<ListViewItem> listViewItemList = new ArrayList<ListViewItem>() ;
     private ArrayList<ListViewItem> filteredItemList = listViewItemList;
     private boolean sorted = false;
+    private ImageButton shareButton;
     Filter listFilter;
 
     // ListViewAdapter의 생성자
     public ListViewAdapter() {
-
     }
 
     public void sortList() {
@@ -41,6 +54,7 @@ public class ListViewAdapter extends BaseAdapter implements Filterable{
             sorted =true;
         }
     }
+
     // Adapter에 사용되는 데이터의 개수를 리턴. : 필수 구현
     @Override
     public int getCount() {
@@ -63,17 +77,49 @@ public class ListViewAdapter extends BaseAdapter implements Filterable{
 //        ImageView iconImageView = (ImageView) convertView.findViewById(R.id.icon) ;
         TextView nameTextView = (TextView) convertView.findViewById(R.id.name) ;
         TextView phoneNumberTextView = (TextView) convertView.findViewById(R.id.phoneNumber) ;
-
         // Data Set(listViewItemList)에서 position에 위치한 데이터 참조 획득
-        ListViewItem listViewItem = filteredItemList.get(position);
+        final ListViewItem listViewItem = filteredItemList.get(position);
 
         // 아이템 내 각 위젯에 데이터 반영
 //        iconImageView.setImageDrawable(listViewItem.getIcon());
         nameTextView.setText(listViewItem.getName());
         phoneNumberTextView.setText(listViewItem.getPhoneNumber());
 
+        shareButton = (ImageButton) convertView.findViewById(R.id.shareButton);
+        shareButton.setOnClickListener(new ImageButton.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String smsText = "test test";
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) //At least KitKat
+                {
+                    String defaultSmsPackageName = Telephony.Sms.getDefaultSmsPackage(v.getContext()); //Need to change the build to API 19
+
+                    Intent sendIntent = new Intent(Intent.ACTION_SENDTO);
+                    sendIntent = new Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:" + Uri.encode(listViewItem.getPhoneNumber())));
+                    sendIntent.putExtra(Intent.EXTRA_TEXT, smsText);
+
+                    if (defaultSmsPackageName != null)//Can be null in case that there is no default, then the user would be able to choose any app that support this intent.
+                    {
+                        sendIntent.setPackage(defaultSmsPackageName);
+                    }
+                    v.getContext().startActivity(sendIntent);
+
+                }
+                else //For early versions, do what worked for you before.
+                {
+                    Intent sendIntent = new Intent(Intent.ACTION_VIEW);
+                    sendIntent.setData(Uri.parse("sms:"));
+                    sendIntent.putExtra("sms_body", smsText);
+                    v.getContext().startActivity(sendIntent);
+                }
+            }
+        });
+
+
         return convertView;
     }
+
+
 
     // 지정한 위치(position)에 있는 데이터와 관계된 아이템(row)의 ID를 리턴. : 필수 구현
     @Override

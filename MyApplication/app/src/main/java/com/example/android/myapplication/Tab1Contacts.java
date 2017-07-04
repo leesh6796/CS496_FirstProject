@@ -2,9 +2,16 @@ package com.example.android.myapplication;
 
 import android.Manifest;
 import android.content.ContentResolver;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Build;
 import android.provider.ContactsContract;
+import android.provider.MediaStore;
+import android.provider.Telephony;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -21,19 +28,21 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.OutputStream;
+
 
 public class Tab1Contacts extends Fragment {
 
     public Tab1Contacts() {}
     private ListView mListView;
     private ImageButton sortButton;
-
+    private ContentResolver resolver;
     private static final int REQUEST_READ_CONTACTS = 1;
     private JSONArray contactList;
     ListViewAdapter adapter;
 
     private void readContacts() {
-        ContentResolver resolver = getActivity().getApplicationContext().getContentResolver();
+        resolver = getActivity().getApplicationContext().getContentResolver();
         Cursor cursor = resolver.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
         contactList = new JSONArray();
 
@@ -86,6 +95,8 @@ public class Tab1Contacts extends Fragment {
                 adapter.notifyDataSetChanged();
             }
         });
+
+
         EditText editTextFilter = (EditText)rootView.findViewById(R.id.editTextFilter);
         editTextFilter.addTextChangedListener(new TextWatcher() {
             @Override
@@ -102,6 +113,7 @@ public class Tab1Contacts extends Fragment {
                 ((ListViewAdapter) mListView.getAdapter()).getFilter().filter(filterText);
             }
         });
+
         return rootView;
     }
 
@@ -114,7 +126,6 @@ public class Tab1Contacts extends Fragment {
                 // Explain to the user why we need to write the permission.
             }
             requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, REQUEST_READ_CONTACTS);
-
         } else {
             readContacts();
         }
