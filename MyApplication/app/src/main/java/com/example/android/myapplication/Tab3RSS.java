@@ -2,7 +2,10 @@ package com.example.android.myapplication;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,31 +31,23 @@ public class Tab3RSS extends Fragment {
         final View rootView = inflater.inflate(R.layout.tab3rss, container, false);
         Log.i("Entry", "진입");
 
-        /*rss = new RssParser("http://myhome.chosun.com/rss/www_section_rss.xml");
-        AsyncTask task = new AsyncTask<Object, Void, Void>() {
-            @Override
-            public Void doInBackground(Object... params) {
-                rss.parse();
-                return null;
+        new Thread() {
+            public void run() {
+                rss = new RssParser("http://myhome.chosun.com/rss/www_section_rss.xml");
+
+                Bundle bundle = new Bundle();
+                Message msg = handler.obtainMessage();
+                msg.setData(bundle);
+                handler.sendMessage(msg);
             }
-
-            @Override
-            public void onPostExecute(Void result) {
-                int i;
-                ArrayList<String> items = (ArrayList<String>)rss.getItemTitles();
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1);
-
-                titles = (ListView)rootView.findViewById(R.id.newsList);
-                titles.setAdapter(adapter);
-
-                for(i=0; i<items.size(); i++) {
-                    //plainText += items.get(i) + "\n";
-                    adapter.add(items.get(i));
-                }
-            }
-        };
-        task.execute();*/
+        }.start();
 
         return rootView;
     }
+
+    Handler handler = new Handler() {
+        public void handleMessage(Message msg) {
+            Bundle bundle = msg.getData();
+        }
+    };
 }
