@@ -34,8 +34,12 @@ public class WebViewActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent sendIntent = new Intent(Intent.ACTION_VIEW);
+                String smsBody = "오늘 저녁 어때!";
+                sendIntent.putExtra("sms_body", smsBody); // 보낼 문자
+                sendIntent.putExtra("address", "01012341234"); // 받는사람 번호
+                sendIntent.setType("vnd.android-dir/mms-sms");
+                startActivity(sendIntent);
             }
         });
 
