@@ -43,7 +43,7 @@ public class GalleryGridView extends Fragment {
                 //int id = R.drawable.class.get
 
                 Intent intent = new Intent(getActivity(), ImgViewerActivity.class);
-                intent.putExtra("imgNumber", pos);
+                intent.putExtra("imgNumber", PreloadBitmap.getId(pos));
                 startActivity(intent);
             }
         });
@@ -58,17 +58,17 @@ public class GalleryGridView extends Fragment {
         int numGirls = res.getInteger(R.integer.numGirls);
 
 
-        for(i=1; i<=numGirls; i++) {
+        for(i=0; i<numGirls; i++) {
         try {
             String imgName = "i" + String.valueOf(i);
-            int id = R.drawable.class.getField(imgName).getInt(null);
+            int id = PreloadBitmap.getId(i);
             /*int size = 1;
             BitmapFactory.Options opt = new BitmapFactory.Options();
             opt.inSampleSize = 4;
             Bitmap bitmapOriginal = BitmapFactory.decodeResource(ct.getResources(), id, opt);
             Bitmap bitmapSimpleSize = Bitmap.createScaledBitmap(bitmapOriginal, bitmapOriginal.getWidth() / size, bitmapOriginal.getHeight() / size, true);*/
 
-            adapter.addItem(PreloadBitmap.getBitmap(i-1), id);
+            adapter.addItem(id);
         } catch (Exception ex) {
             ex.printStackTrace();
         }

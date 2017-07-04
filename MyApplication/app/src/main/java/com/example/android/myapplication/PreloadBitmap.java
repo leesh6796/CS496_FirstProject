@@ -11,11 +11,17 @@ import java.util.ArrayList;
 public class PreloadBitmap {
 
     private static ArrayList<Bitmap> bitmaps = new ArrayList<>();
+    private static ArrayList<Integer> ids = new ArrayList<>();
     private static boolean loaded = false;
 
     public static void addBitmap(Bitmap src) {
         loaded = true;
         bitmaps.add(src);
+    }
+
+    public static void addBitmap(int id) {
+        loaded = true;
+        ids.add(id);
     }
 
     public static boolean isInitialized() {
@@ -24,6 +30,9 @@ public class PreloadBitmap {
 
     public static Bitmap getBitmap(int pos) {
         return bitmaps.get(pos);
+    }
+    public static int getId(int pos) {
+        return ids.get(pos);
     }
 
     public static int getSize() {

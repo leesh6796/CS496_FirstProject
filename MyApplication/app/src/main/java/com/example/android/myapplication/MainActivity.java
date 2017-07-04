@@ -16,6 +16,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.bumptech.glide.Glide;
+
 public class MainActivity extends AppCompatActivity {
 
     /**
@@ -41,12 +43,13 @@ public class MainActivity extends AppCompatActivity {
 
         backPressCloseHandler = new BackPressCloseHandler(this);
 
+        // Glide로 대체한다.
         if(!PreloadBitmap.isInitialized()) {
             // 아이린 미리 로드
             Context ct = getApplicationContext();
-            BitmapFactory.Options opt = new BitmapFactory.Options();
+            /*BitmapFactory.Options opt = new BitmapFactory.Options();
             opt.inSampleSize = 1;
-            int size = 1;
+            int size = 1;*/
             int i;
 
             Resources res = getResources();
@@ -55,10 +58,12 @@ public class MainActivity extends AppCompatActivity {
             for (i = 1; i <= numGirls; i++) {
                 try {
                     String imgName = "i" + String.valueOf(i);
-                    int id = R.drawable.class.getField(imgName).getInt(null);
-                    Bitmap bitmapOriginal = BitmapFactory.decodeResource(res, id, opt);
+                    int id = res.getIdentifier(imgName, "drawable", ct.getApplicationInfo().packageName);
+
+                    /*Bitmap bitmapOriginal = BitmapFactory.decodeResource(res, id, opt);
                     Bitmap bitmapSimpleSize = Bitmap.createScaledBitmap(bitmapOriginal, bitmapOriginal.getWidth() / size, bitmapOriginal.getHeight() / size, true);
-                    PreloadBitmap.addBitmap(bitmapSimpleSize);
+                    PreloadBitmap.addBitmap(bitmapSimpleSize);*/
+                    PreloadBitmap.addBitmap(id);
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
