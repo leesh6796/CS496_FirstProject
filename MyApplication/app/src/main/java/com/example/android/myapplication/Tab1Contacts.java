@@ -36,6 +36,7 @@ public class Tab1Contacts extends Fragment {
     private static final int REQUEST_READ_CONTACTS = 1;
     private JSONArray contactList;
     ListViewAdapter adapter;
+
     private void readContacts() {
         ContentResolver resolver = getActivity().getApplicationContext().getContentResolver();
         Cursor cursor = resolver.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
@@ -78,7 +79,7 @@ public class Tab1Contacts extends Fragment {
         mListView = (ListView) rootView.findViewById(R.id.contacts);
         adapter = new ListViewAdapter() ;
         mListView.setAdapter(adapter);
-        adapter.addItem(contactList, getResources().getDrawable(R.drawable.bullbasaur));
+        adapter.addItem(contactList, getResources().getDrawable(R.drawable.user));
 
         EditText editTextFilter = (EditText)rootView.findViewById(R.id.editTextFilter);
         editTextFilter.addTextChangedListener(new TextWatcher() {
@@ -93,11 +94,12 @@ public class Tab1Contacts extends Fragment {
             @Override
             public void afterTextChanged(Editable s) {
                 String filterText = s.toString();
-                if (filterText.length() > 0) {
-                    mListView.setFilterText(filterText);
-                } else {
-                    mListView.clearTextFilter();
-                }
+//                if (filterText.length() > 0) {
+//                    mListView.setFilterText(filterText);
+//                } else {
+//                    mListView.clearTextFilter();
+//                }
+                ((ListViewAdapter) mListView.getAdapter()).getFilter().filter(filterText);
             }
         });
 
