@@ -8,12 +8,13 @@
     android:paddingLeft="10dp"
     android:paddingBottom="0dp"
 
-    tools:context="com.example.android.myapplication.MainActivity$PlaceholderFragment">
+    tools:context="com.example.android.myapplication.MainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingTop="10dp">
 
         <ImageView
             android:layout_width="40dp"

@@ -156,11 +156,11 @@ public class MainActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "연락처";
+                    return "CONTACTS";
                 case 1:
-                    return "갤러리";
+                    return "GALLERY";
                 case 2:
-                    return "메모";
+                    return "RSS";
             }
             return null;
         }

@@ -1,21 +1,15 @@
 package com.example.android.myapplication;
 
 import android.Manifest;
-import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.os.Handler;
 import android.provider.ContactsContract;
-import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.support.v4.app.ListFragment;
-import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,8 +20,6 @@ import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import java.util.ArrayList;
-import java.util.Collections;
 
 
 public class Tab1Contacts extends Fragment {
@@ -55,7 +47,7 @@ public class Tab1Contacts extends Fragment {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            Log.i("name", id + " = "+ name);
+//            Log.i("name", id + " = "+ name);
 
             Cursor phoneCursor = resolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
                     ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?", new String[] { id }, null);
@@ -71,6 +63,7 @@ public class Tab1Contacts extends Fragment {
             }
             contactList.put(personInfo);
         }
+        cursor.close();
     }
 
 
