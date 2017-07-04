@@ -1,5 +1,6 @@
 package com.example.android.myapplication;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -10,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -23,13 +25,28 @@ import java.util.ArrayList;
 public class Tab3RSS extends Fragment {
 
     RssParser rss;
-    private ListView titles;
+    private ListView newsList;
+    private ArrayAdapter<String> adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final View rootView = inflater.inflate(R.layout.tab3rss, container, false);
-        Log.i("Entry", "진입");
+        View rootView = inflater.inflate(R.layout.tab3rss, container, false);
+        newsList = (ListView)rootView.findViewById(R.id.newsList);
+        adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1);
+        newsList.setAdapter(adapter);
+
+        // ListView Item Click EventListener
+        newsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView parent, View view, int pos, long id) {
+                //int id = R.drawable.class.get
+
+                Intent intent = new Intent(getActivity(), WebViewActivity.class);
+                intent.putExtra("link", rss.getNewsURL(pos));
+                startActivity(intent);
+            }
+        });
 
         new Thread() {
             public void run() {
@@ -48,6 +65,11 @@ public class Tab3RSS extends Fragment {
     Handler handler = new Handler() {
         public void handleMessage(Message msg) {
             Bundle bundle = msg.getData();
+
+            int i;
+            for(i=0; i<rss.getNewsCount(); i++) {
+                adapter.add(rss.getNewsTitle(i));
+            }
         }
     };
 }
