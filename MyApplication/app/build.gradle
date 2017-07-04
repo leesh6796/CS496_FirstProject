@@ -19,6 +19,22 @@ android {
     }
 }
 
+repositories {
+    mavenCentral()
+
+    jcenter()
+    if (project.hasProperty('local.repo'))
+    {
+        maven { name 'glide-local'; url project.property('local.repo') }
+    }
+    maven { name 'glide-snapshot'; url 'http://oss.sonatype.org/content/repositories/snapshots' }
+    flatDir name: 'libs', dirs: 'libs'
+    maven
+            {
+                url "https://jitpack.io"
+            }
+}
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
@@ -28,4 +44,6 @@ dependencies {
     compile 'com.android.support:design:25.3.1'
     testCompile 'junit:junit:4.12'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile 'com.android.support:support-v4:25.3.1'
 }

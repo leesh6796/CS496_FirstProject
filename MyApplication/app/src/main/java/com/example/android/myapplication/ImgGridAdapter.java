@@ -10,6 +10,9 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+
 import java.util.ArrayList;
 
 /**
@@ -42,7 +45,9 @@ public class ImgGridAdapter extends BaseAdapter {
         ImageView img = (ImageView)convertView.findViewById(R.id.gridImg);
         ListViewImgItem item = gridViewItemList.get(pos);
 
-        img.setImageBitmap(item.getSrc());
+        Glide.with(context).load(item.getId()).diskCacheStrategy(DiskCacheStrategy.ALL).centerCrop().into(img);
+
+        //img.setImageBitmap(item.getSrc());
 
         return convertView;
     }
@@ -66,6 +71,13 @@ public class ImgGridAdapter extends BaseAdapter {
     public void addItem(Bitmap img, int id) {
         ListViewImgItem item = new ListViewImgItem();
         item.setSrc(img);
+        item.setId(id);
+
+        gridViewItemList.add(item);
+    }
+
+    public void addItem(int id) {
+        ListViewImgItem item = new ListViewImgItem();
         item.setId(id);
 
         gridViewItemList.add(item);

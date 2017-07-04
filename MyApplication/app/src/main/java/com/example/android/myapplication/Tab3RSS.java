@@ -28,7 +28,7 @@ public class Tab3RSS extends Fragment {
         final View rootView = inflater.inflate(R.layout.tab3rss, container, false);
         Log.i("Entry", "진입");
 
-        rss = new RssParser("http://myhome.chosun.com/rss/www_section_rss.xml");
+        /*rss = new RssParser("http://myhome.chosun.com/rss/www_section_rss.xml");
         AsyncTask task = new AsyncTask<Object, Void, Void>() {
             @Override
             public Void doInBackground(Object... params) {
@@ -51,7 +51,7 @@ public class Tab3RSS extends Fragment {
                 }
             }
         };
-        task.execute();
+        task.execute();*/
 
         return rootView;
     }

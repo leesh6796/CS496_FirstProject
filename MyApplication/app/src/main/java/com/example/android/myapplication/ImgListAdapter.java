@@ -15,6 +15,9 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -47,7 +50,8 @@ public class ImgListAdapter extends BaseAdapter {
         ImageView img = (ImageView)convertView.findViewById(R.id.imgitem);
 
         ListViewImgItem item = listViewItemList.get(pos);
-        img.setImageBitmap(item.getSrc());
+        //img.setImageBitmap(item.getSrc());
+        Glide.with(context).load(item.getId()).diskCacheStrategy(DiskCacheStrategy.ALL).centerCrop().into(img);
         /*if(item.getImg() != null) {
             int size = 1;
             BitmapFactory.Options opt = new BitmapFactory.Options();
@@ -95,6 +99,15 @@ public class ImgListAdapter extends BaseAdapter {
     public void addItem(Bitmap img, int id) {
         ListViewImgItem item = new ListViewImgItem();
         item.setSrc(img);
+        item.setId(id);
+
+        listViewItemList.add(item);
+    }
+
+
+    // Glide 사용을 위한 method
+    public void addItem(int id) {
+        ListViewImgItem item = new ListViewImgItem();
         item.setId(id);
 
         listViewItemList.add(item);
