@@ -44,7 +44,7 @@ public class ListViewAdapter extends BaseAdapter implements Filterable{
 
     public ListViewAdapter(boolean sharePage, String title, String link) {
         if (sharePage) {
-            smsText=title+" "+link;
+            smsText=title + "\r\n" + link;
         } else {
             smsText="";
         }

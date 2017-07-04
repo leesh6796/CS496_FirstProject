@@ -24,7 +24,8 @@ public class WebViewActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         Intent intent = getIntent();
-        String url = intent.getStringExtra("link");
+        final String title = intent.getStringExtra("title");
+        final String url = intent.getStringExtra("link");
 
         // ToolBar Back button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -34,12 +35,10 @@ public class WebViewActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent sendIntent = new Intent(Intent.ACTION_VIEW);
-                String smsBody = "오늘 저녁 어때!";
-                sendIntent.putExtra("sms_body", smsBody); // 보낼 문자
-                sendIntent.putExtra("address", "01012341234"); // 받는사람 번호
-                sendIntent.setType("vnd.android-dir/mms-sms");
-                startActivity(sendIntent);
+                Intent intent = new Intent(WebViewActivity.this, SelectReceiverActivity.class);
+                intent.putExtra("title", title);
+                intent.putExtra("link", url);
+                startActivity(intent);
             }
         });
 

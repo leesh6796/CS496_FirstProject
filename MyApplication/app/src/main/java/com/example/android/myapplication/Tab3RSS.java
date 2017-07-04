@@ -43,6 +43,7 @@ public class Tab3RSS extends Fragment {
                 //int id = R.drawable.class.get
 
                 Intent intent = new Intent(getActivity(), WebViewActivity.class);
+                intent.putExtra("title", rss.getNewsTitle(pos));
                 intent.putExtra("link", rss.getNewsURL(pos));
                 startActivity(intent);
             }
