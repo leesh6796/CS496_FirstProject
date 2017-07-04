@@ -131,13 +131,13 @@ public class MainActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
         //Returning the current tabs
             switch (position) {
-                case 0:
+                case 1:
                     Tab1Contacts tab1 = new Tab1Contacts();
                     return tab1;
-                case 1:
+                case 2:
                     Tab2Gallery tab2 = new Tab2Gallery();
                     return tab2;
-                case 2:
+                case 0:
                     Tab3RSS tab3 = new Tab3RSS();
                     return tab3;
                 default:
@@ -155,11 +155,11 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public CharSequence getPageTitle(int position) {
             switch (position) {
-                case 0:
-                    return "CONTACTS";
                 case 1:
-                    return "GALLERY";
+                    return "CONTACTS";
                 case 2:
+                    return "GALLERY";
+                case 0:
                     return "NEWS";
             }
             return null;
