@@ -49,28 +49,23 @@ public class Tab3RSS extends Fragment {
             }
         });
 
-        new Thread() {
-            public void run() {
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            public Void doInBackground(final Void... params) {
                 rss = new RssParser("http://myhome.chosun.com/rss/www_section_rss.xml");
-
-                Bundle bundle = new Bundle();
-                Message msg = handler.obtainMessage();
-                msg.setData(bundle);
-                handler.sendMessage(msg);
+                return null;
             }
-        }.start();
+
+            @Override
+            protected void onPostExecute( final Void result ) {
+                // continue what you are doing...
+                int i;
+                for(i=0; i<rss.getNewsCount(); i++) {
+                    adapter.add(rss.getNewsTitle(i));
+                }
+            }
+        }.execute();
 
         return rootView;
     }
-
-    Handler handler = new Handler() {
-        public void handleMessage(Message msg) {
-            Bundle bundle = msg.getData();
-
-            int i;
-            for(i=0; i<rss.getNewsCount(); i++) {
-                adapter.add(rss.getNewsTitle(i));
-            }
-        }
-    };
 }
